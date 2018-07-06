@@ -12,7 +12,7 @@
 <body ng-app="TodoApp">
   <main ng-controller="TodoController as vm">
     <div>
-      <form>
+      <form ng-submit="vm.addTodo(vm.newTodo)">
         <input type="text" ng-model="vm.newTodo.text" placeholder="New Todo" />
         <select ng-model="vm.newTodo.catergory">
           <option ng-selected="true">General</option>
@@ -24,9 +24,16 @@
     </div>
     <div>
       <ul>
-        <li ng-repeat="todo in vm.todos">
-          <p>{{ todo.text }}</p>
-          <p>{{ todo.catergory }}</p>
+        <li 
+          ng-repeat="todo in vm.todos"
+          ng-class="{'todo': true, 'completed': todo.completed}"
+          ng-click="vm.toggleTodo(todo)"
+        >
+          <span class="todo-text">{{ todo.text }}</span>
+          <div>
+            <span class="todo-catergory">{{ todo.catergory }}</span>
+            
+          </div>
         </li>
       </ul>
     </div>

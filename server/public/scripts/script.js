@@ -3,10 +3,11 @@ const app = angular.module('TodoApp', []);
 app.controller('TodoController', ['$http', function($http){
   const self = this;
   
-  const apiCall = function(url, type, data){
+  // create an api helper function to save code
+  self.apiCall = function(url, method, data){
     return $http({
       url: url,
-      type: type,
+      method: method,
       data: data
     })
     .then(function(res){
@@ -17,29 +18,38 @@ app.controller('TodoController', ['$http', function($http){
     });
   }
 
+  // more specific api calls
   self.getTodos = function(){
-    apiCall('/todos', 'GET')
+    self.apiCall('/todos', 'GET')
       .then(function(todos){
         self.todos = todos;
       })
   }
 
   self.addTodo = function(todo){
-    apiCall('/todos', 'POST', todo)
-      .then(self.getTodos);
+    console.log(todo)
+    self.apiCall('/todos', 'POST', todo)
+      .then(self.getTodos);  
+    self.newTodo = {}; // resets inputs 
   }
 
   self.updateTodo = function(todo){
-    apiCall(`/todos/${todo._id}`, 'PUT', todo)
+    self.apiCall(`/todos/${todo._id}`, 'PUT', todo)
       .then(self.getTodos);
   }
 
   self.deleteTodo = function(id){
-    apiCall(`/todos/${id}`, 'DELETE')
+    self.apiCall(`/todos/${id}`, 'DELETE')
       .then(self.getTodos);
   }
 
 
+  self.toggleTodo = function(todo){
+    todo.complete = !todo.complete;
+    self.updateTodo(todo);
+  }
 
+  // get todos on load
+  self.getTodos();
 
 }])
