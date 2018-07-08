@@ -14,7 +14,7 @@
   <main ng-controller="TodoController as vm" ng-class="{'error-shake': vm.error}">
     <div>
       <form ng-submit="vm.addTodo(vm.newTodo)" ng-class="{'error-border': vm.error}">
-        <input type="text" ng-model="vm.newTodo.text" placeholder="New Todo" ng-change="vm.removeError()" maxlength="36" autofocus />
+        <input type="text" ng-model="vm.newTodo.text" placeholder="New Todo" ng-change="vm.removeError()" maxlength="120" autofocus />
         <!-- <button>Submit</button> -->
       </form>
     </div>
