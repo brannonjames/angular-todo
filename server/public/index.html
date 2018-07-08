@@ -30,7 +30,7 @@
           <div class="deleteBtn">
               <img ng-class="{'slide-right': confirmRemove}" src="vendors/trash-alt-regular.svg" ng-click="confirmRemove = true; $event.stopPropagation()"/>
               <div ng-class="{'delete-confirm': true, 'slide-up': !confirmRemove}">
-                <div>You sure? </div>
+                <div>Delete?</div>
                 <div ng-click="vm.deleteTodo($event, todo._id)" class="confirm-option">Yes</div>
                 <div> / </div>
                 <div ng-click="confirmRemove = false; $event.stopPropagation()" class="confirm-option">No</div>
