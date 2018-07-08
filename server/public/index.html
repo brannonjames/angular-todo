@@ -21,7 +21,7 @@
     <div>
       <ul>
         <li 
-          ng-repeat="todo in vm.todos | orderBy: 'todo.text'"
+          ng-repeat="todo in vm.todos | orderBy: 'complete'"
           ng-class="{'completed': todo.complete}"
           ng-click="vm.toggleTodo(todo)"
           ng-init="confirmRemove = false"
