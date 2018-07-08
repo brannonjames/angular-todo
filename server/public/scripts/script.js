@@ -27,10 +27,13 @@ app.controller('TodoController', ['$http', function($http){
   }
 
   self.addTodo = function(todo){
-    console.log(todo)
-    self.apiCall('/todos', 'POST', todo)
-      .then(self.getTodos);  
-    self.newTodo = {}; // resets inputs 
+    if(self.newTodo && self.newTodo.text){
+      self.apiCall('/todos', 'POST', todo)
+        .then(self.getTodos);  
+      self.newTodo = {}; // resets inputs 
+    } else {
+      self.error = true;
+    }
   }
 
   self.updateTodo = function(todo){
@@ -38,7 +41,8 @@ app.controller('TodoController', ['$http', function($http){
       .then(self.getTodos);
   }
 
-  self.deleteTodo = function(id){
+  self.deleteTodo = function(event, id){
+    event.stopPropagation();
     self.apiCall(`/todos/${id}`, 'DELETE')
       .then(self.getTodos);
   }
@@ -47,6 +51,10 @@ app.controller('TodoController', ['$http', function($http){
   self.toggleTodo = function(todo){
     todo.complete = !todo.complete;
     self.updateTodo(todo);
+  }
+
+  self.removeError = function(){
+    self.error = false;
   }
 
   // get todos on load

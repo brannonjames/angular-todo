@@ -5,34 +5,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Angular Todo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500" rel="stylesheet">
   <link rel="stylesheet" href="styles/css/style.css" />
   <script src="vendors/angular.min.js"></script>
   <script src="scripts/script.js"></script>
 </head>
 <body ng-app="TodoApp">
-  <main ng-controller="TodoController as vm">
+  <main ng-controller="TodoController as vm" ng-class="{'error-shake': vm.error}">
     <div>
-      <form ng-submit="vm.addTodo(vm.newTodo)">
-        <input type="text" ng-model="vm.newTodo.text" placeholder="New Todo" />
-        <select ng-model="vm.newTodo.catergory">
-          <option ng-selected="true">General</option>
-          <option>Urgent</option>
-          <option>Procastinate</option>
-        </select>
-        <button>Submit</button>
+      <form ng-submit="vm.addTodo(vm.newTodo)" ng-class="{'error-border': vm.error}">
+        <input type="text" ng-model="vm.newTodo.text" placeholder="New Todo" ng-change="vm.removeError()" maxlength="36" autofocus />
+        <!-- <button>Submit</button> -->
       </form>
     </div>
     <div>
       <ul>
         <li 
-          ng-repeat="todo in vm.todos"
-          ng-class="{'todo': true, 'completed': todo.completed}"
+          ng-repeat="todo in vm.todos | orderBy: 'todo.text'"
+          ng-class="{'completed': todo.complete}"
           ng-click="vm.toggleTodo(todo)"
+          ng-init="confirmRemove = false"
         >
           <span class="todo-text">{{ todo.text }}</span>
-          <div>
-            <span class="todo-catergory">{{ todo.catergory }}</span>
-            
+          <div class="deleteBtn">
+              <img ng-class="{'slide-right': confirmRemove}" src="vendors/trash-alt-regular.svg" ng-click="confirmRemove = true; $event.stopPropagation()"/>
+              <div ng-class="{'delete-confirm': true, 'slide-up': !confirmRemove}">
+                <div>You sure? </div>
+                <div ng-click="vm.deleteTodo($event, todo._id)" class="confirm-option">Yes</div>
+                <div> / </div>
+                <div ng-click="confirmRemove = false; $event.stopPropagation()" class="confirm-option">No</div>
+              </div>
           </div>
         </li>
       </ul>
